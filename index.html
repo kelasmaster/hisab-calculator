@@ -38,6 +38,49 @@
     </footer>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Include the hijri-date library -->
+  <script src="https://cdn.jsdelivr.net/npm/hijri-date/lib/hijri-date.min.js"></script>
+  <script>
+    function convertHijriToGregorian() {
+      const hijriYear = document.getElementById('hijriYearInput').value;
+
+      if (!hijriYear || hijriYear < 1300 || hijriYear > 1500) {
+        alert("Please enter a valid Hijri year between 1300 and 1500.");
+        return;
+      }
+
+      try {
+        // Convert 1 Ramadan to Gregorian
+        const ramadanHijri = new HijriDate(hijriYear, 8, 1); // Month is 0-based (8 = Ramadan)
+        const ramadanGregorian = ramadanHijri.toGregorian();
+
+        // Convert 1 Shawal to Gregorian
+        const shawalHijri = new HijriDate(hijriYear, 9, 1); // Month is 0-based (9 = Shawal)
+        const shawalGregorian = shawalHijri.toGregorian();
+
+        // Format the Gregorian dates
+        const ramadanDate = `${ramadanGregorian.getDate()} ${getMonthName(ramadanGregorian.getMonth())}, ${ramadanGregorian.getFullYear()}`;
+        const shawalDate = `${shawalGregorian.getDate()} ${getMonthName(shawalGregorian.getMonth())}, ${shawalGregorian.getFullYear()}`;
+
+        // Display results
+        document.getElementById('result').innerHTML = `
+          <p><strong>1 Ramadan ${hijriYear} AH:</strong> ${ramadanDate}</p>
+          <p><strong>1 Shawal ${hijriYear} AH:</strong> ${shawalDate}</p>
+        `;
+      } catch (error) {
+        console.error("Error converting dates:", error);
+        document.getElementById('result').innerHTML = "<p>Error converting Hijri dates. Please try again later.</p>";
+      }
+    }
+
+    // Helper function to get month names
+    function getMonthName(monthIndex) {
+      const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      return months[monthIndex];
+    }
+  </script>
 </body>
 </html>
