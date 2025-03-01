@@ -1,32 +1,29 @@
-async function calculateHijriDates() {
-  const dateInput = document.getElementById('dateInput').value;
+async function convertHijriToGregorian() {
+  const hijriYear = document.getElementById('hijriYearInput').value;
 
-  if (!dateInput) {
-    alert("Please select a date.");
+  if (!hijriYear || hijriYear < 1300 || hijriYear > 1500) {
+    alert("Please enter a valid Hijri year between 1300 and 1500.");
     return;
   }
 
-  // Extract year, month, and day from the selected date
-  const [year, month, day] = dateInput.split('-');
-
   try {
-    // Fetch Ramadan start date (1st of September in the selected year)
-    const ramadanResponse = await fetch(`https://api.aladhan.com/v1/gToH?date=1-09-${year}`);
+    // Fetch Gregorian date for 1 Ramadan
+    const ramadanResponse = await fetch(`https://api.aladhan.com/v1/hToG?date=1-9-${hijriYear}`);
     const ramadanData = await ramadanResponse.json();
-    const ramadanDate = ramadanData.data.hijri;
+    const ramadanDate = ramadanData.data.gregorian;
 
-    // Fetch Shawal start date (1st of October in the selected year)
-    const shawalResponse = await fetch(`https://api.aladhan.com/v1/gToH?date=1-10-${year}`);
+    // Fetch Gregorian date for 1 Shawal
+    const shawalResponse = await fetch(`https://api.aladhan.com/v1/hToG?date=1-10-${hijriYear}`);
     const shawalData = await shawalResponse.json();
-    const shawalDate = shawalData.data.hijri;
+    const shawalDate = shawalData.data.gregorian;
 
     // Display results
     document.getElementById('result').innerHTML = `
-      <p><strong>1 Ramadan ${ramadanDate.year} AH:</strong> ${ramadanDate.day} ${ramadanDate.month.en}</p>
-      <p><strong>1 Shawal ${shawalDate.year} AH:</strong> ${shawalDate.day} ${shawalDate.month.en}</p>
+      <p><strong>1 Ramadan ${hijriYear} AH:</strong> ${ramadanDate.day} ${ramadanDate.month.en}, ${ramadanDate.year}</p>
+      <p><strong>1 Shawal ${hijriYear} AH:</strong> ${shawalDate.day} ${shawalDate.month.en}, ${shawalDate.year}</p>
     `;
   } catch (error) {
     console.error("Error fetching data:", error);
-    document.getElementById('result').innerHTML = "<p>Error fetching Hijri dates. Please try again later.</p>";
+    document.getElementById('result').innerHTML = "<p>Error fetching Gregorian dates. Please try again later.</p>";
   }
 }
