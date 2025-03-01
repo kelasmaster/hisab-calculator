@@ -23,11 +23,11 @@
 <body>
   <div class="container">
     <h1>HISAB APP</h1>
-    <p class="lead">Find the Dates of Ramadan and Shawal</p>
+    <p class="lead">Convert 1 Ramadan and 1 Shawal in Hijri Calendar to Gregorian Dates</p>
 
     <div class="input-group mb-3">
-      <input type="date" id="dateInput" class="form-control">
-      <button class="btn btn-primary" onclick="calculateHijriDates()">Calculate</button>
+      <input type="number" id="hijriYearInput" class="form-control" placeholder="Enter Hijri Year" min="1300" max="1500">
+      <button class="btn btn-primary" onclick="convertHijriToGregorian()">Convert</button>
     </div>
 
     <div id="result" class="result"></div>
